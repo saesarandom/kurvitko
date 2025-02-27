@@ -1,0 +1,50 @@
+body {
+  font-family: Overlock SC, sans-serif;
+  text-align: center;
+  background-color: black;
+  color: thistle;
+}
+
+table {
+  border-collapse: separate; /* Změna z collapse na separate */
+  border-spacing: 7px; /* Mezera mezi buňkami */
+  margin: 20px auto;
+}
+
+td {
+  width: 33px;
+  height: 33px;
+  text-align: center;
+  border: 1px solid #000;
+  cursor: pointer;
+  background-color: #000000; /* Bílé pozadí pro lepší kontrast */
+}
+
+td:hover {
+  background-color: #f0f0f0;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+.found {
+  background-color: limegreen;
+  color: rgb(0, 0, 0);
+}
+
+.missed {
+  background-color: red !important;
+  color: rgb(0, 0, 0);
+}
+
+#slova {
+  font-weight: bold;
+  margin: 10px;
+  color: rgb(255, 255, 255);
+}
+
+#vysledek {
+  margin-top: 20px;
+  font-size: 18px;
+}

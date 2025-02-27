@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hledání slov</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Hledání slov</h1>
+    <div>
+      <label for="velikost">Velikost mřížky:</label>
+      <select id="velikost">
+        <option value="10">10x10</option>
+        <option value="15">15x15</option>
+        <option value="20">20x20</option>
+        <option value="25">25x25</option>
+        <option value="30">30x30</option>
+        <option value="40">40x40</option>
+        <option value="50">50x50</option>
+      </select>
+      <label for="pocet_slov">Počet slov:</label>
+      <select id="pocet_slov">
+        {% for i in range(5, 16) %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <button onclick="spustitHru()">Spustit hru</button>
+    </div>
+    <div id="hra" style="display: none">
+      <p>Najdi těchto slov v mřížce do 60 sekund:</p>
+      <div id="slova"></div>
+      <div>Zbývající čas: <span id="cas">60</span> s</div>
+      <table id="mrizka"></table>
+      <div id="vysledek"></div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
