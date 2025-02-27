@@ -1,24 +1,24 @@
-from crawl4ai import Crawler
-import json
+import asyncio
+from crawl4ai import AsyncWebCrawler
 
-# Initialize the crawler
-crawler = Crawler()
+async def main():
+    async with AsyncWebCrawler() as crawler:
+        try:
+            result = await crawler.arun(
+                url="https://www.nechybujte.cz/slovnik-soucasne-cestiny/nápor",
+            )
+            # Use extract_text with a CSS selector to get the content
+            meaning = result.extract_text("span.ssc_desc1.w")  # Target the span with the meaning
+            if meaning:
+                # Split the text into words (assuming <w> tags are rendered as space-separated text)
+                words = [word.strip() for word in meaning.split() if word.strip()]
+                # Join words, preserving commas and cleaning up
+                meaning_text = " ".join(words).replace(" ,", ",").replace("  ", " ").strip()
+                print(meaning_text)
+            else:
+                print("Meaning not found. Check the CSS selector or URL.")
+        except Exception as e:
+            print(f"Error crawling: {e}")
 
-# Crawl a dictionary page for a word (e.g., "příjezdový")
-result = crawler.crawl("https://www.nechybujte.cz/slovnik-soucasne-cestiny/nápor")
-
-# Extract the meaning using a CSS selector (adjust based on the website’s structure)
-meaning = result.extract_text(".definition")
-
-print(f"Meaning of 'příjezdový': {meaning}")
-
-# Cache meaning
-cache = {}
-with open("word_meanings.json", "r", encoding="utf-8") as f:
-    cache = json.load(f) if f.readable() else {}
-
-cache["příjezdový"] = meaning
-
-# Save to file
-with open("word_meanings.json", "w", encoding="utf-8") as f:
-    json.dump(cache, f, ensure_ascii=False, indent=2)
+if __name__ == "__main__":
+    asyncio.run(main())
