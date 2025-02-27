@@ -6,8 +6,33 @@ document.addEventListener("DOMContentLoaded", () => {
   let timer;
   let table;
   let poziceSlov;
+  let wordMeanings = {}; // Cache for meanings
 
-  window.spustitHru = function () {
+  // Function to fetch meaning using crawl4ai
+  async function fetchMeaning(word) {
+    try {
+      const response = await fetch(`/meaning?word=${encodeURIComponent(word)}`);
+      if (response.ok) {
+        const meaning = await response.text();
+        return meaning.trim() || "Meaning not found";
+      }
+      return "Meaning not found";
+    } catch (error) {
+      console.error(`Error fetching meaning for ${word}:`, error);
+      return "Meaning not found";
+    }
+  }
+
+  // Preload meanings for all words before starting the game
+  async function preloadMeanings(words) {
+    const meaningPromises = words.map((word) => fetchMeaning(word));
+    const meanings = await Promise.all(meaningPromises);
+    words.forEach((word, index) => {
+      wordMeanings[word] = meanings[index];
+    });
+  }
+
+  window.spustitHru = async function () {
     const velikost = parseInt(document.getElementById("velikost").value);
     const pocetSlov = document.getElementById("pocet_slov").value;
     document.getElementById("hra").style.display = "block";
@@ -16,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nalezenaSlova = [];
     vybranaPole = [];
 
-    // Nastavení času podle velikosti mřížky
+    // Set time based on grid size
     if (velikost === 10) casZbyva = 60;
     else if (velikost === 15) casZbyva = 80;
     else if (velikost === 20) casZbyva = 100;
@@ -27,32 +52,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("cas").textContent = casZbyva;
 
-    fetch(`/mrizka?velikost=${velikost}&pocet_slov=${pocetSlov}`)
-      .then((response) => response.json())
-      .then((data) => {
-        slovaKNajiti = data.slova;
-        poziceSlov = data.pozice || {};
-        document.getElementById("slova").textContent = slovaKNajiti.join(", ");
+    // Preload meanings before loading the grid
+    try {
+      const response = await fetch(
+        `/mrizka?velikost=${velikost}&pocet_slov=${pocetSlov}`
+      );
+      const data = await response.json();
+      slovaKNajiti = data.slova;
+      poziceSlov = data.pozice || {};
 
-        table = document.getElementById("mrizka");
-        table.style.pointerEvents = "auto";
-        data.mrizka.forEach((radek, i) => {
-          const tr = document.createElement("tr");
-          radek.forEach((pismeno, j) => {
-            const td = document.createElement("td");
-            td.textContent = pismeno;
-            td.dataset.row = i;
-            td.dataset.col = j;
-            tr.appendChild(td);
-          });
-          table.appendChild(tr);
+      // Preload meanings for all words
+      await preloadMeanings(slovaKNajiti);
+
+      // Display words with tooltips
+      const slovaContainer = document.getElementById("slova");
+      slovaContainer.innerHTML = slovaKNajiti
+        .map(
+          (word) => `
+              <span class="tooltip" data-word="${word}">
+                  ${word}
+                  <span class="tooltiptext">${
+                    wordMeanings[word] || "Loading..."
+                  }</span>
+              </span>
+          `
+        )
+        .join(", ");
+
+      table = document.getElementById("mrizka");
+      table.style.pointerEvents = "auto";
+      data.mrizka.forEach((radek, i) => {
+        const tr = document.createElement("tr");
+        radek.forEach((pismeno, j) => {
+          const td = document.createElement("td");
+          td.textContent = pismeno;
+          td.dataset.row = i;
+          td.dataset.col = j;
+          tr.appendChild(td);
         });
+        table.appendChild(tr);
+      });
 
-        if (timer) clearInterval(timer);
-        spustCasovac();
-        pridatInterakci();
-      })
-      .catch((error) => console.error("Chyba při načítání dat:", error));
+      if (timer) clearInterval(timer);
+      spustCasovac();
+      pridatInterakci();
+    } catch (error) {
+      console.error("Chyba při načítání dat:", error);
+    }
   };
 
   function spustCasovac() {
@@ -209,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body += slovo.length; // Počítání bodů podle délky slova
     });
 
-    // Odhalíme nenalezená slova a přidáme robustní kontrolu
+    // Odhalíme nenalezená slova
     const nenalezenaSlova = slovaKNajiti.filter(
       (slovo) => !nalezenaSlova.includes(slovo)
     );

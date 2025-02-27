@@ -1,0 +1,76 @@
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:20] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:20] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "GET /mrizka?velikost=10&pocet_slov=5 HTTP/1.1" 200 -
+ERROR:root:Asyncio error in /meaning for \u0159ezat: This event loop is already running
+ERROR:root:Asyncio error in /meaning for deska: This event loop is already running
+ERROR:root:Asyncio error in /meaning for po\u0159ád: This event loop is already running
+ERROR:root:Asyncio error in /meaning for Havel: This event loop is already running
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "[35m[1mGET /meaning?word=deska HTTP/1.1[0m" 500 -
+ERROR:root:Asyncio error in /meaning for názor: This event loop is already running
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "[35m[1mGET /meaning?word=po\u0159ád HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "[35m[1mGET /meaning?word=Havel HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "[35m[1mGET /meaning?word=názor HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:40:22] "[35m[1mGET /meaning?word=\u0159ezat HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\hatre\\Downloads\\kurvitko\\mrizka.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:11] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:11] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:11] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:27] "GET /mrizka?velikost=10&pocet_slov=5 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:36] "GET /meaning?word=zmoci HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:43:39] "GET /meaning?word=scéna HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:17] "GET /mrizka?velikost=10&pocet_slov=5 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:28] "GET /meaning?word=\u0159idi\u010d HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:28] "GET /meaning?word=ší\u0159ka HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:28] "GET /meaning?word=ves HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:38] "GET /meaning?word=krýt HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:44:39] "GET /meaning?word=stroj HTTP/1.1" 200 -
+ERROR:root:Asyncio error in /meaning for prima: Browser.close: Connection closed while reading from the driver
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:45:34] "[35m[1mGET /meaning?word=prima HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:45:34] "GET /meaning?word=Ivan HTTP/1.1" 200 -
+ERROR:root:Asyncio error in /meaning for horko: Browser.close: Connection closed while reading from the driver
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:45:35] "[35m[1mGET /meaning?word=horko HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:00] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:00] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:00] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:14] "GET /mrizka?velikost=10&pocet_slov=5 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:25] "GET /meaning?word=Honza HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:46:25] "GET /meaning?word=nejen HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in 'C:\\Users\\hatre\\Downloads\\kurvitko\\mrizka.py', reloading
+ERROR:root:Error fetching meaning for plyn: Browser.close: Connection closed while reading from the driver
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:52:57] "GET /meaning?word=plyn HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 385-413-125
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:20] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:20] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:20] "[36mGET /static/script.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:21] "GET /mrizka?velikost=10&pocet_slov=5 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:30] "GET /meaning?word=molo HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Feb/2025 13:57:33] "GET /meaning?word=\u010deta HTTP/1.1" 200 -

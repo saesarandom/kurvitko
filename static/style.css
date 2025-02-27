@@ -6,8 +6,8 @@ body {
 }
 
 table {
-  border-collapse: separate; /* Změna z collapse na separate */
-  border-spacing: 7px; /* Mezera mezi buňkami */
+  border-collapse: separate;
+  border-spacing: 7px;
   margin: 20px auto;
 }
 
@@ -17,7 +17,7 @@ td {
   text-align: center;
   border: 1px solid #000;
   cursor: pointer;
-  background-color: #000000; /* Bílé pozadí pro lepší kontrast */
+  background-color: #000000;
 }
 
 td:hover {
@@ -47,4 +47,34 @@ td:hover {
 #vysledek {
   margin-top: 20px;
   font-size: 18px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Above the word */
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 14px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

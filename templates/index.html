@@ -7,11 +7,92 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <style>
+      body {
+        font-family: Overlock SC, sans-serif;
+        text-align: center;
+        background-color: black;
+        color: thistle;
+      }
+
+      table {
+        border-collapse: separate;
+        border-spacing: 7px;
+        margin: 20px auto;
+      }
+
+      td {
+        width: 33px;
+        height: 33px;
+        text-align: center;
+        border: 1px solid #000;
+        cursor: pointer;
+        background-color: #000000;
+      }
+
+      td:hover {
+        background-color: #f0f0f0;
+      }
+
+      .selected {
+        background-color: yellow;
+      }
+
+      .found {
+        background-color: limegreen;
+        color: rgb(0, 0, 0);
+      }
+
+      .missed {
+        background-color: red !important;
+        color: rgb(0, 0, 0);
+      }
+
+      #slova {
+        font-weight: bold;
+        margin: 10px;
+        color: rgb(255, 255, 255);
+      }
+
+      #vysledek {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0 5px;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #333;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Above the word */
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 14px;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
-    <h1>Hledání slov</h1>
     <div>
-      <label for="velikost">Velikost mřížky:</label>
+      <label for="velikost">VELIKOST MŘÍŽKY:</label>
       <select id="velikost">
         <option value="10">10x10</option>
         <option value="15">15x15</option>
@@ -21,18 +102,25 @@
         <option value="40">40x40</option>
         <option value="50">50x50</option>
       </select>
-      <label for="pocet_slov">Počet slov:</label>
+      <label for="pocet_slov">POČET SLOV:</label>
       <select id="pocet_slov">
-        {% for i in range(5, 16) %}
-        <option value="{{ i }}">{{ i }}</option>
-        {% endfor %}
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
       </select>
       <button onclick="spustitHru()">Spustit hru</button>
     </div>
     <div id="hra" style="display: none">
-      <p>Najdi těchto slov v mřížce do 60 sekund:</p>
+      <p>NAJDI TATO SLOVA V MŘÍŽCE DO <span id="cas">60</span> SEKUND:</p>
       <div id="slova"></div>
-      <div>Zbývající čas: <span id="cas">60</span> s</div>
       <table id="mrizka"></table>
       <div id="vysledek"></div>
     </div>
