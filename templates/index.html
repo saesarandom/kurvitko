@@ -91,7 +91,17 @@
     </style>
   </head>
   <body>
-    <div>
+    <div class="game-modes">
+      <button class="mode-btn normal" onclick="showNormalModeOptions()">
+        Normální mód
+      </button>
+      <button class="mode-btn speed" onclick="spustitRychlyMod()">
+        Rychlý mód
+      </button>
+    </div>
+
+    <!-- Normal mode options -->
+    <div id="normalModeOptions">
       <label for="velikost">VELIKOST MŘÍŽKY:</label>
       <select id="velikost">
         <option value="10">10x10</option>
@@ -118,12 +128,26 @@
       </select>
       <button onclick="spustitHru()">Spustit hru</button>
     </div>
+
     <div id="hra" style="display: none">
+      <!-- Speed mode info box -->
+      <div id="rychly-mod-info" class="speed-mode-info" style="display: none">
+        <span>RYCHLÝ MÓD: Každé slovo × časový bonus! Aktuální bonus: </span>
+        <span id="multiplier" class="multiplier-display">180</span>
+      </div>
+
       <p>NAJDI TATO SLOVA V MŘÍŽCE DO <span id="cas">60</span> SEKUND:</p>
       <div id="slova"></div>
       <table id="mrizka"></table>
       <div id="vysledek"></div>
     </div>
+
+    <script>
+      // Simple function to show/hide normal mode options
+      function showNormalModeOptions() {
+        document.getElementById("normalModeOptions").style.display = "block";
+      }
+    </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
 </html>

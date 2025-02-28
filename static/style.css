@@ -78,3 +78,154 @@ td:hover {
   visibility: visible;
   opacity: 1;
 }
+
+/* Add these styles to style.css */
+
+/* Speed mode indicator styles */
+.speed-mode-info {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 15px;
+  margin: 10px auto;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.multiplier-display {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin: 0 5px;
+  font-weight: bold;
+  color: yellow;
+}
+
+/* Points indicator that appears when finding a word */
+.points-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  background-color: rgba(0, 255, 0, 0.8);
+  color: black;
+  border-radius: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 100;
+  animation: float-up 1.5s ease-out;
+  pointer-events: none;
+}
+
+.points-indicator.fade-out {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -150%);
+    opacity: 0;
+  }
+}
+
+/* Mode selection buttons */
+.game-modes {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.mode-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.mode-btn:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+.mode-btn.speed {
+  background-color: #8b008b; /* Dark magenta for speed mode */
+}
+
+.mode-btn.speed:hover {
+  background-color: #b300b3;
+}
+
+/* Speed mode results styling */
+.speed-results {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.speed-results h3 {
+  color: #ff00ff;
+  margin-top: 0;
+}
+
+.total-score {
+  font-size: 24px;
+  color: yellow;
+  margin: 15px 0;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+.score-table th,
+.score-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+.score-table th {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+.score-table td {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+  .game-modes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mode-btn {
+    margin: 5px 0;
+    width: 80%;
+  }
+
+  .score-table {
+    font-size: 14px;
+  }
+}

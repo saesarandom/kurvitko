@@ -1,3 +1,5 @@
+// Modify the existing script.js to add the speed mode
+
 document.addEventListener("DOMContentLoaded", () => {
   let vybranaPole = [];
   let slovaKNajiti;
@@ -7,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let table;
   let poziceSlov;
   let wordMeanings = {}; // Cache for meanings
+  let gameMode = "normal"; // Add game mode tracking: "normal" or "speed"
+  let speedModeScores = {}; // Track when each word was found for scoring
 
   // Function to fetch meaning using crawl4ai
   async function fetchMeaning(word) {
@@ -32,14 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Normal mode game
   window.spustitHru = async function () {
+    gameMode = "normal";
     const velikost = parseInt(document.getElementById("velikost").value);
     const pocetSlov = document.getElementById("pocet_slov").value;
-    document.getElementById("hra").style.display = "block";
-    document.getElementById("mrizka").innerHTML = "";
-    document.getElementById("vysledek").innerHTML = "";
-    nalezenaSlova = [];
-    vybranaPole = [];
+
+    // Reset game state
+    resetGameState();
 
     // Set time based on grid size
     if (velikost === 10) casZbyva = 60;
@@ -52,10 +56,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("cas").textContent = casZbyva;
 
-    // Preload meanings before loading the grid
+    await loadAndStartGame(velikost, pocetSlov);
+  };
+
+  // New Speed Mode game
+  window.spustitRychlyMod = async function () {
+    gameMode = "speed";
+    const velikost = 30; // Fixed grid size for speed mode
+    const pocetSlov = 30; // Always generate 50 words for speed mode
+
+    // Reset game state
+    resetGameState();
+
+    // Fixed time for speed mode
+    casZbyva = 180;
+    document.getElementById("cas").textContent = casZbyva;
+    document.getElementById("rychly-mod-info").style.display = "block";
+
+    await loadAndStartGame(velikost, pocetSlov);
+  };
+
+  // Reset game state to start a new game
+  function resetGameState() {
+    document.getElementById("hra").style.display = "block";
+    document.getElementById("mrizka").innerHTML = "";
+    document.getElementById("vysledek").innerHTML = "";
+    document.getElementById("rychly-mod-info").style.display = "none";
+    nalezenaSlova = [];
+    vybranaPole = [];
+    speedModeScores = {}; // Reset speed mode scores
+  }
+
+  // Common function to load and start the game for both modes
+  async function loadAndStartGame(velikost, pocetSlov) {
     try {
       const response = await fetch(
-        `/mrizka?velikost=${velikost}&pocet_slov=${pocetSlov}`
+        `/mrizka?velikost=${velikost}&pocet_slov=${pocetSlov}&mode=${gameMode}`
       );
       const data = await response.json();
       slovaKNajiti = data.slova;
@@ -99,13 +135,19 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Chyba při načítání dat:", error);
     }
-  };
+  }
 
   function spustCasovac() {
     const casElement = document.getElementById("cas");
     timer = setInterval(() => {
       casZbyva--;
       casElement.textContent = casZbyva;
+
+      // Update multiplier display for speed mode
+      if (gameMode === "speed") {
+        document.getElementById("multiplier").textContent = casZbyva;
+      }
+
       if (casZbyva <= 0) {
         clearInterval(timer);
         ukoncitHru();
@@ -223,10 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .reverse()
       .join("");
 
+    let foundWord = null;
     if (
       slovaKNajiti.includes(vybraneSlovo) &&
       !nalezenaSlova.includes(vybraneSlovo)
     ) {
+      foundWord = vybraneSlovo;
       nalezenaSlova.push(vybraneSlovo);
       vybranaPole.forEach((td) => {
         td.classList.remove("selected");
@@ -236,6 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
       slovaKNajiti.includes(zpetneSlovo) &&
       !nalezenaSlova.includes(zpetneSlovo)
     ) {
+      foundWord = zpetneSlovo;
       nalezenaSlova.push(zpetneSlovo);
       vybranaPole.forEach((td) => {
         td.classList.remove("selected");
@@ -244,16 +289,67 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       vybranaPole.forEach((td) => td.classList.remove("selected"));
     }
+
+    // If we're in speed mode and found a word, record the time for scoring
+    if (gameMode === "speed" && foundWord) {
+      speedModeScores[foundWord] = {
+        timeLeft: casZbyva,
+        length: foundWord.length,
+      };
+
+      // Show temporary score indicator
+      showPointsIndicator(foundWord);
+    }
+
     vybranaPole = [];
+  }
+
+  // Show a temporary floating score indicator for speed mode
+  function showPointsIndicator(word) {
+    const multiplier = casZbyva;
+    const wordLength = word.length;
+    const points = wordLength * multiplier;
+
+    // Create floating indicator
+    const indicator = document.createElement("div");
+    indicator.className = "points-indicator";
+    indicator.textContent = `+${points} (${wordLength}×${multiplier})`;
+
+    // Position it near the center
+    const container = document.getElementById("hra");
+    container.appendChild(indicator);
+
+    // Animate and remove
+    setTimeout(() => {
+      indicator.classList.add("fade-out");
+      setTimeout(() => {
+        indicator.remove();
+      }, 1000);
+    }, 50);
   }
 
   function ukoncitHru() {
     table.style.pointerEvents = "none";
 
     let body = 0;
-    nalezenaSlova.forEach((slovo) => {
-      body += slovo.length; // Počítání bodů podle délky slova
-    });
+    let speedModeTotal = 0;
+
+    if (gameMode === "normal") {
+      // Normal scoring - just word length
+      nalezenaSlova.forEach((slovo) => {
+        body += slovo.length;
+      });
+    } else if (gameMode === "speed") {
+      // Speed mode scoring with time multipliers
+      nalezenaSlova.forEach((slovo) => {
+        const score = speedModeScores[slovo];
+        if (score) {
+          const wordPoints = score.length * score.timeLeft;
+          speedModeTotal += wordPoints;
+        }
+      });
+      body = speedModeTotal;
+    }
 
     // Odhalíme nenalezená slova
     const nenalezenaSlova = slovaKNajiti.filter(
@@ -284,11 +380,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const vysledek = document.getElementById("vysledek");
-    if (body > 0 || nalezenaSlova.length > 0) {
-      vysledek.innerHTML = `Hra skončila!<br>Našel jsi ${nalezenaSlova.length} z ${slovaKNajiti.length} slov.<br>Celkové body: ${body}`;
-    } else {
-      console.warn("Body nebo nalezená slova nebyly nastavena správně.");
-      vysledek.innerHTML = `Hra skončila!<br>Našel jsi ${nalezenaSlova.length} z ${slovaKNajiti.length} slov.<br>Celkové body: 0`;
+    if (gameMode === "normal") {
+      if (body > 0 || nalezenaSlova.length > 0) {
+        vysledek.innerHTML = `Hra skončila!<br>Našel jsi ${nalezenaSlova.length} z ${slovaKNajiti.length} slov.<br>Celkové body: ${body}`;
+      } else {
+        console.warn("Body nebo nalezená slova nebyly nastaveny správně.");
+        vysledek.innerHTML = `Hra skončila!<br>Našel jsi ${nalezenaSlova.length} z ${slovaKNajiti.length} slov.<br>Celkové body: 0`;
+      }
+    } else if (gameMode === "speed") {
+      // Create a detailed breakdown of points for speed mode
+      let detailHtml = `<div class="speed-results">
+        <h3>Výsledky rychlého módu</h3>
+        <p>Našel jsi ${nalezenaSlova.length} z ${slovaKNajiti.length} slov</p>
+        <p class="total-score">Celkové skóre: ${body}</p>
+        <table class="score-table">
+          <tr>
+            <th>Slovo</th>
+            <th>Délka</th>
+            <th>Časový bonus</th>
+            <th>Body</th>
+          </tr>`;
+
+      nalezenaSlova.forEach((slovo) => {
+        const score = speedModeScores[slovo];
+        if (score) {
+          const wordPoints = score.length * score.timeLeft;
+          detailHtml += `<tr>
+            <td>${slovo}</td>
+            <td>${score.length}</td>
+            <td>${score.timeLeft}×</td>
+            <td>${wordPoints}</td>
+          </tr>`;
+        }
+      });
+
+      detailHtml += `</table></div>`;
+      vysledek.innerHTML = detailHtml;
     }
   }
 });

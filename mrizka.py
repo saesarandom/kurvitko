@@ -80,7 +80,13 @@ def index():
 @app.route('/mrizka')
 def get_mrizka():
     velikosti = [10, 15, 20, 25, 30, 40, 50]
-    pocet_slov_range = range(5, 16)
+    game_mode = request.args.get('mode', 'normal')
+    
+    if game_mode == 'speed':
+        pocet_slov_range = range(5, 31)  # Allow up to 30 words for speed mode
+    else:
+        pocet_slov_range = range(5, 16)  # Original range for normal mode
+        
     velikost = int(request.args.get('velikost', 10))
     pocet_slov = int(request.args.get('pocet_slov', 5))
     velikost = min(max(velikost, min(velikosti)), max(velikosti))
@@ -110,7 +116,7 @@ def fetch_meaning_sync(word):
                 return meaning_text
             else:
                 logging.warning(f"No meaning span found for {word}")
-                return "Meaning not found"
+                return "Význam nenalezen"
         else:
             logging.warning(f"Failed to fetch URL: {response.status_code}")
             return "Failed to fetch meaning"
