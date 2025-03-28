@@ -138,7 +138,7 @@ def get_meaning():
         # Use synchronous function instead of asyncio
         meaning = fetch_meaning_sync(word)
         
-        # Store result in cache
+        
         meaning_cache[word] = meaning
         
         return Response(meaning, mimetype='text/plain')
